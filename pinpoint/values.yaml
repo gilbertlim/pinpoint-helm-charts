@@ -52,8 +52,8 @@ pinpoint-hbase:
 
 pinpoint-collector:
   image:
-    repository: pinpointdocker/pinpoint-collector
-    tag:
+    repository: 9ilbert/pinpoint-collector # pinpointdocker/pinpoint-collector
+    tag: "2.5.1"
     pullPolicy: IfNotPresent
   resources:
     requests:
