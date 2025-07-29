@@ -37,14 +37,16 @@ pinpoint-hbase:
 
   image:
     repository: pinpointdocker/pinpoint-hbase
-    tag: 2.5.1
+    tag: 3.0.3
     pullPolicy: IfNotPresent
   resources:
     requests:
-      memory: "1Gi" # "4Gi"
-      cpu: "250m" # "1"
+      memory: "4Gi"
+      cpu: "1"
   zookeeper:
     host:
+
+  hbaseVersion: 2.2.6
 
   persistence:
     enabled: true
