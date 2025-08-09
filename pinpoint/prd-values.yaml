@@ -1,0 +1,60 @@
+pinpoint-zookeeper:
+  replicaCount: 1
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+
+  persistence:
+    size: 2Gi
+
+pinpoint-hbase:
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "1"
+
+  persistence:
+    size: 10Gi
+
+pinpoint-collector:
+  javaToolOptions: "-Dpinpoint.modules.collector.inspector.hbase.enabled=true"
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+
+pinpoint-web:
+  route:
+    gateway:
+      parentRefsName:
+      sectionName:
+    hostname:
+
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+
+pinpoint-mysql:
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+  persistence:
+    size: 2Gi
+
+pinpoint-batch:
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+
+pinpoint-flink:
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "256m"
+
+pinpoint-receiver:

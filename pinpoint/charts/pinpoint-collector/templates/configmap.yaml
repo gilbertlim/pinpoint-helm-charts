@@ -5,9 +5,10 @@ metadata:
   labels:
 {{ include "pinpoint-collector.labels" . | indent 4 }}
 data:
+  JAVA_TOOL_OPTIONS: "{{ .Values.javaToolOptions }}"
   CLUSTER_ENABLE:  "{{ .Values.clusterEnable }}"
   PINPOINT_ZOOKEEPER_ADDRESS: "{{ include "pinpoint-collector.zookeeper.fullname" . }}"
-  SPRING_PROFILES: "{{ .Values.profiles }}"
+  SPRING_PROFILES_ACTIVE: "{{ .Values.profiles }}"
   JAVA_OPTS: "-Dspring.profiles.active={{ .Values.profiles }}"
   LOGGING_LEVEL_ROOT:  "{{ .Values.loggingLevelRoot }}"
   FLINK_CLUSTER_ENABLE:  "{{ .Values.flink.enabled }}"

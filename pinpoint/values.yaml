@@ -1,24 +1,13 @@
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# The base hadoop image to use for all components.
-# See this repo for image build details: https://github.com/Comcast/kube-yarn/tree/master/image
-
 global:
   batchEnabled: false
   webhookEnabled: false
 
 pinpoint-zookeeper:
-  profiles: release
-  serviceType: ClusterIP
-
-  replicas: 3
-  affinity: {}
+  replicaCount: 1
 
   image:
-    repository: registry.k8s.io/kubernetes-zookeeper
-    tag: 1.0-3.4.10
-    pullPolicy: IfNotPresent
+    tag: 3.9.3-debian-12-r19
+
   resources:
     requests:
       memory: "256Mi"
@@ -27,7 +16,14 @@ pinpoint-zookeeper:
   persistence:
     enabled: true
     size: 2Gi
+    storageClass:
 
+  pdb:
+    create: false
+  serviceAccount:
+    create: false
+  networkPolicy:
+    enabled: false
 
 pinpoint-hbase:
   profiles: release
@@ -46,16 +42,17 @@ pinpoint-hbase:
   zookeeper:
     host:
 
-  hbaseVersion: 2.2.6
-
   persistence:
     enabled: true
     size: 10Gi
+    storageClassName:
+
+  hbaseVersion: 2.2.6
 
 pinpoint-collector:
   image:
-    repository: 9ilbert/pinpoint-collector # pinpointdocker/pinpoint-collector
-    tag: "2.5.1"
+    repository: pinpointdocker/pinpoint-collector
+    tag: 3.0.3
     pullPolicy: IfNotPresent
   resources:
     requests:
@@ -81,7 +78,7 @@ pinpoint-collector:
 pinpoint-web:
   image:
     repository: pinpointdocker/pinpoint-web
-    tag: 2.5.1
+    tag: 3.0.3
     pullPolicy: IfNotPresent
   serverPort: 8080
   resources:
@@ -105,10 +102,20 @@ pinpoint-web:
     # headless service: pinpoint-zookeeper-headless
     host: pinpoint-zookeeper
 
+  route:
+    enabled: true
+    gateway:
+      namespace: nginx-gateway
+      parentRefsName:
+    hostname:
+    service:
+      namespace: telemetry
+      port: 80
+
 pinpoint-mysql:
   image:
     repository: pinpointdocker/pinpoint-mysql
-    tag: 2.5.1
+    tag: 2.5.4
     pullPolicy: IfNotPresent
 
   rootPassword: root123
@@ -121,14 +128,14 @@ pinpoint-mysql:
       cpu: "250m"
   affinity: {}
   persistence:
-    enabled: false
+    enabled: true
     size: 2Gi
-
+    storageClassName:
 
 pinpoint-batch:
   image:
     repository: pinpointdocker/pinpoint-batch
-    tag: 2.5.1
+    tag: 3.0.3
     pullPolicy: IfNotPresent
   serverPort: 8079
   affinity: { }
@@ -173,7 +180,7 @@ pinpoint-batch:
 pinpoint-flink:
   image:
     repository: pinpointdocker/pinpoint-flink
-    tag: 2.5.1
+    tag: 3.0.3
     pullPolicy: IfNotPresent
   serverPort: 8081
   affinity: { }

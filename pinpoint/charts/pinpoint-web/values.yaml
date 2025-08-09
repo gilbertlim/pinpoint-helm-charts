@@ -52,5 +52,16 @@ zookeeper:
   host: pinpoint-zookeeper
 
 service:
-  type: LoadBalancer
-  port: 40001
+  type: ClusterIP
+  port: 80
+  
+route:
+  enabled: false
+  gateway:
+    namespace:
+    parentRefsName:
+    sectionName:
+  hostname:
+  service:
+    namespace:
+    port:
